@@ -1,0 +1,25 @@
+{
+  "categories": [
+    {
+      "link": "https://ain.ua/category/collections/gamedev",
+      "name": "gamedev"
+    },
+    {
+      "link": "https://ain.ua/category/startupscat",
+      "name": "startupscat"
+    },
+    {
+      "link": "https://ain.ua/category/gadgets",
+      "name": "gadgets"
+    },
+    {
+      "link": "https://ain.ua/category/gov",
+      "name": "gov"
+    },
+    {
+      "link": "https://ain.ua/category/opinions",
+      "name": "opinions"
+    }
+  ],
+  "articles_per_category": 1
+}
