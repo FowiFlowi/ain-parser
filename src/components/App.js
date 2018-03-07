@@ -86,7 +86,7 @@ class App extends React.Component {
 
         this.fetchArticles()
           .then(() => {
-            this.setState({ updPreview: 'Готово!' })
+            this.setState({ updPreview: 'Готово!', currPage: 1 })
             const timer = setTimeout(() => this.setState({ updPreview: '' }), 2000)
             this.setState({ timer })
           })
