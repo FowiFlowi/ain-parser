@@ -36,7 +36,7 @@ class App extends React.Component {
             return article
           })
 
-          this.setState({ data, pagesAmount: data[0].amount })
+          this.setState({ data, pagesAmount: Number(data[0].amount) })
         } else {
           this.setState({ listPreview: (result && result.error) || 'Совсем нет никаких лекций :c', data: [] })
         }
@@ -70,7 +70,7 @@ class App extends React.Component {
     const offset = 2 * (page - 1)
 
     this.fetchArticles(offset)
-    this.setState({ currPage: page })
+    this.setState({ currPage: Number(page) })
   }
 
   handeUpdate() {
