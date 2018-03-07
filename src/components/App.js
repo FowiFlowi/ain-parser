@@ -36,7 +36,7 @@ class App extends React.Component {
             return article
           })
 
-          this.setState({ data, pagesAmount: Number(data[0].amount) })
+          this.setState({ data, pagesAmount: Number(data[0].amount), listPreview: '' })
         } else {
           this.setState({ listPreview: (result && result.error) || 'Совсем нет никаких лекций :c', data: [] })
         }
@@ -73,9 +73,10 @@ class App extends React.Component {
     this.setState({ currPage: Number(page) })
   }
 
-  handeUpdate() {
+  handleUpdate(e) {
     this.setState({ updPreview: 'Секундочку...' })
-
+    e.persist()
+    e.target.disabled = true
     clearTimeout(this.state.timer)
 
     fetch('/update')
@@ -87,18 +88,22 @@ class App extends React.Component {
         this.fetchArticles()
           .then(() => {
             this.setState({ updPreview: 'Готово!', currPage: 1 })
+            e.target.disabled = false
             const timer = setTimeout(() => this.setState({ updPreview: '' }), 2000)
             this.setState({ timer })
           })
       })
-      .catch(e => this.setState({ updPreview: `Error: ${e.message}` }))
+      .catch(e => {
+        e.target.disabled = false
+        this.setState({ updPreview: `Error: ${e.message}` })
+      })
   }
 
   render() {
     return (
       <div className='wrapper'>
         <Update
-          onUpdate={::this.handeUpdate}
+          onUpdate={::this.handleUpdate}
           preview={this.state.updPreview}
         />
         <List
