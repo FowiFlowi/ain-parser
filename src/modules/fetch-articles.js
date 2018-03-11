@@ -6,7 +6,7 @@ function fetchArticles(offset = 0) {
         return { error: response.error || 'Error' }
 
       if (response.data.length > 0) {
-        response.data = response.data.map(article => {
+        const data = response.data.map(article => {
           const paragraphIndx = article.source.indexOf('</p>')
           article.short = article.source.substring(0, paragraphIndx)
           article.display = article.short // show short version in the start
@@ -15,7 +15,7 @@ function fetchArticles(offset = 0) {
           return article
         })
 
-        return { data: response.data, pagesAmount: Number(response.data[0].amount) }
+        return { data, pagesAmount: Number(data[0].amount) }
       } else {
         return null
       }
