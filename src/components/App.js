@@ -25,23 +25,10 @@ class App extends React.Component {
 
   fetchArticles(offset = 0) {
     return fetchArticles(offset)
-      .then(result => {
-        if (result && result.data) {
-          const data = result.data.map(article => {
-            const paragraphIndx = article.source.indexOf('</p>')
-            article.short = article.source.substring(0, paragraphIndx)
-            article.display = article.short // show short version in the start
-            article.aValue = 'Читать далее'
-            article.isShort = true
-            return article
-          })
-
-          this.setState({ data, pagesAmount: Number(data[0].amount), listPreview: '' })
-        } else {
-          this.setState({ listPreview: (result && result.error) || 'Совсем нет никаких лекций :c', data: [] })
-        }
-      })
-      .catch(console.error)
+      .then(({ data, pagesAmount, error }) => data
+        ? this.setState({ data, pagesAmount, listPreview: '' })
+        : this.setState({ listPreview: error || 'Совсем нет никаких лекций :c', data: [] }))
+      .catch(e => this.setState({ listPreview: e.message }))
   }
 
   handleMore(e) {
@@ -85,13 +72,13 @@ class App extends React.Component {
         if (status !== 200)
           return this.setState({ updPreview: response.error || 'Error' })
 
-        this.fetchArticles()
-          .then(() => {
-            this.setState({ updPreview: 'Готово!', currPage: 1 })
-            e.target.disabled = false
-            const timer = setTimeout(() => this.setState({ updPreview: '' }), 2000)
-            this.setState({ timer })
-          })
+        return this.fetchArticles()
+      })
+      .then(() => {
+        this.setState({ updPreview: 'Готово!', currPage: 1 })
+        e.target.disabled = false
+        const timer = setTimeout(() => this.setState({ updPreview: '' }), 2000)
+        this.setState({ timer })
       })
       .catch(e => {
         e.target.disabled = false
@@ -111,7 +98,6 @@ class App extends React.Component {
           currPage={this.state.currPage}
           preview={this.state.listPreview}
           pagesAmount={this.state.pagesAmount}
-          fetchArticles={::this.fetchArticles}
           onClickMore={::this.handleMore}
           onClickPage={::this.handlePage}
         />

@@ -15,7 +15,7 @@ function fetchArticles(offset = 0) {
           return article
         })
 
-        return { data: response.data, pagesAmount: response.data[0].amount }
+        return { data: response.data, pagesAmount: Number(response.data[0].amount) }
       } else {
         return null
       }
